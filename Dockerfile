@@ -1,22 +1,29 @@
-FROM golang:1.6
-
-RUN apt-get update && apt-get -y install zip libaio1
+FROM golang:1.9
 
 ADD distrib /distrib
 
-RUN unzip /distrib/instantclient-basic-linux.x64-12.1.0.2.0.zip -d /usr/lib/oracle && \
-    unzip /distrib/instantclient-sdk-linux.x64-12.1.0.2.0.zip -d /usr/lib/oracle && \
-    unzip /distrib/instantclient-sqlplus-linux.x64-12.1.0.2.0.zip -d /usr/lib/oracle
+ENV VERSION="12.2.0.1.0" \
+    POSTFIX="12_2" \
+    VER="12.2"
 
-RUN rm -rf /distrib
+ENV ORACLE_HOME=/usr/lib/oracle/instantclient_$POSTFIX \
+    LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib/oracle/instantclient_$POSTFIX \
+    PATH=$PATH:/usr/lib/oracle/instantclient_$POSTFIX
 
-ENV ORACLE_HOME=/usr/lib/oracle/instantclient_12_1 \
-    LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib/oracle/instantclient_12_1 \
-    PATH=$PATH:/usr/lib/oracle/instantclient_12_1
+RUN apt-get update && \
+    apt-get -y install zip libaio1 && \
+    unzip /distrib/instantclient-basic-linux.x64-$VERSION.zip -d /usr/lib/oracle && \
+    unzip /distrib/instantclient-sdk-linux.x64-$VERSION.zip -d /usr/lib/oracle && \
+    unzip /distrib/instantclient-sqlplus-linux.x64-$VERSION.zip -d /usr/lib/oracle && \
+    rm -rf /distrib
 
-RUN ln -s $ORACLE_HOME/libclntsh.so.12.1 $ORACLE_HOME/libclntsh.so
+COPY oci8.pc /usr/local/lib/pkgconfig/oci8.pc
 
 # add alias to go so we don't need to provide compilation flags every time
-RUN echo 'alias go="CGO_LDFLAGS=-L$ORACLE_HOME CGO_CFLAGS=-I$ORACLE_HOME/sdk/include go"' >> /root/.bashrc
+RUN ln -s $(find $ORACLE_HOME -name 'libclntsh.so.*') $ORACLE_HOME/libclntsh.so
 
-RUN CGO_LDFLAGS=-L$ORACLE_HOME CGO_CFLAGS=-I$ORACLE_HOME/sdk/include go get gopkg.in/rana/ora.v3
+RUN go get gopkg.in/rana/ora.v4
+
+#RUN echo 'alias go="CGO_LDFLAGS=-L$ORACLE_HOME CGO_CFLAGS=-I$ORACLE_HOME/sdk/include go"' >> /root/.bashrc
+#RUN CGO_LDFLAGS=-L$ORACLE_HOME CGO_CFLAGS=-I$ORACLE_HOME/sdk/include go get gopkg.in/rana/ora.v4
+
