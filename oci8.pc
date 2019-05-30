@@ -1,8 +1,8 @@
 prefix=/usr
 
-version=12.2
+version=19.3
 
-libdir=/usr/lib/oracle/instantclient_12_2
+libdir=/usr/lib/oracle/instantclient_19_3
 includedir=${libdir}/sdk/include
 
 Name: oci8

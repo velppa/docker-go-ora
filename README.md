@@ -1,2 +1,57 @@
 # docker-go-ora
-Docker Image with Oracle Instant Client installed and Golang' rana/ora Oracle driver
+
+Docker Image with Oracle Instant Client installed and Golang' rana/ora Oracle driver.
+
+Find it here: https://hub.docker.com/r/schmooser/go-ora
+
+## Preparation
+
+Download Oracle Instant Client for Linux: https://www.oracle.com/technetwork/topics/linuxx86-64soft-092277.html
+
+- Basic Light Package
+- SQL\*Plus Package
+- SDK Package
+
+Copy Instant Client to `distrib/` folder:
+
+```bash
+
+rm distrib/*.zip
+cp ~/Downloads/instantclient-*.zip distrib/
+
+
+# there should be the following files
+
+❯ ls -al distrib
+total 75464
+drwxr-xr-x  5 pavel  staff       160 May 30 22:32 .
+drwxr-xr-x  7 pavel  staff       224 May 30 22:01 ..
+-rw-r--r--@ 1 pavel  staff  36789541 May 30 22:32 instantclient-basiclite-linux.x64-19.3.0.0.0dbru.zip
+-rw-r--r--@ 1 pavel  staff    932294 May 30 22:32 instantclient-sdk-linux.x64-19.3.0.0.0dbru.zip
+-rw-r--r--@ 1 pavel  staff    910409 May 30 22:32 instantclient-sqlplus-linux.x64-19.3.0.0.0dbru.zip
+
+```
+
+Update version in `Dockerfile` and `oci8.pc`.
+
+## Build
+
+```bash
+
+docker build \
+  -t schmooser/go-ora:1.12 \
+  .
+
+```
+
+
+## Login and push to Docker Hub
+
+```bash
+
+docker login --username=schmooser
+
+docker push schmooser/go-ora:1.12
+
+```
+
