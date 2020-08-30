@@ -24,7 +24,7 @@ COPY oci8.pc /usr/local/lib/pkgconfig/oci8.pc
 # not needed for 19.3
 #RUN ln -s $(find $ORACLE_HOME -name 'libclntsh.so.*' | head -n 1) $ORACLE_HOME/libclntsh.so
 
-RUN go get gopkg.in/rana/ora.v4
+RUN go get github.com/mattn/go-oci8
 
 #RUN echo 'alias go="CGO_LDFLAGS=-L$ORACLE_HOME CGO_CFLAGS=-I$ORACLE_HOME/sdk/include go"' >> /root/.bashrc
 #RUN CGO_LDFLAGS=-L$ORACLE_HOME CGO_CFLAGS=-I$ORACLE_HOME/sdk/include go get gopkg.in/rana/ora.v4

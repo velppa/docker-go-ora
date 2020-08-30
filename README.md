@@ -1,8 +1,8 @@
 # docker-go-ora
 
-Docker Image with Oracle Instant Client installed and Golang' rana/ora Oracle driver.
+Docker Image with Oracle Instant Client installed and Golang' mattn/go-oci8 Oracle driver.
 
-Find it here: https://hub.docker.com/r/schmooser/go-ora
+Find it here: https://hub.docker.com/r/schmooser/go-oci8
 
 ## Preparation
 
@@ -34,7 +34,7 @@ Update version in `Dockerfile` and `oci8.pc`.
 
 ```bash
 
-docker build -t schmooser/go-ora:1.15 .
+docker build -t schmooser/go-oci8:1.15 .
 
 ```
 
@@ -44,5 +44,5 @@ docker build -t schmooser/go-ora:1.15 .
 ```bash
 docker login --username=schmooser
 
-docker push schmooser/go-ora:1.15
+docker push schmooser/go-oci8:1.15
 ```
