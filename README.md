@@ -34,7 +34,7 @@ Update version in `Dockerfile` and `oci8.pc`.
 
 ```bash
 
-docker build -t schmooser/go-oci8:1.15 .
+docker build -t schmooser/go-oci8:1.20 .
 
 ```
 
@@ -44,5 +44,20 @@ docker build -t schmooser/go-oci8:1.15 .
 ```bash
 docker login --username=schmooser
 
-docker push schmooser/go-oci8:1.15
+docker push schmooser/go-oci8:1.20
+```
+
+
+## Usage
+
+Use the image in `FROM` clause in Dockerfile, then add dependency on go-oci8:
+
+```Dockerfile
+FROM schmooser/go-oci8:1.20
+
+# ...
+
+
+RUN go get github.com/mattn/go-oci8
+
 ```
